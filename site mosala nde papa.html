@@ -1,0 +1,129 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+const oeuvres = [
+  {
+    titre: "Le regard du passé",
+    image: "/oeuvres/regard-passe.jpg",
+    description: "Acrylique sur toile, 2023",
+  },
+  {
+    titre: "Espoir en couleurs",
+    image: "/oeuvres/espoir-couleurs.jpg",
+    description: "Peinture à l'huile, 2024",
+  },
+];
+
+export default function ArtistePeintreSite() {
+  const [accueil, setAccueil] = useState(true);
+  const [nom, setNom] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [envoye, setEnvoye] = useState(false);
+
+  const envoyerVersWhatsApp = () => {
+    const numero = "243893705790";
+    const texte = encodeURIComponent(
+      `Bonjour, je souhaite passer une commande d'œuvre d'art via votre site. Voici mes infos :\n- Nom : ${nom}\n- Email : ${email}\n- Message / Type de commande : ${message}`
+    );
+    window.open(`https://wa.me/${numero}?text=${texte}`, "_blank");
+    setEnvoye(true);
+  };
+
+  const Navigation = () => (
+    <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+      <div className="flex justify-between items-center px-4 py-3">
+        <img src="/logo-mosala.png" alt="Logo" className="h-10" />
+        <ul className="flex gap-4 text-sm font-medium">
+          <li><a href="#galerie" className="hover:text-blue-600">Galerie</a></li>
+          <li><a href="#apropos" className="hover:text-blue-600">À propos</a></li>
+          <li><a href="#contact" className="hover:text-blue-600">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  );
+
+  if (accueil) {
+    return (
+      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 animate-fade-in">
+        <img
+          src="/logo-mosala.png"
+          alt="Logo Mosala Nde Papa"
+          className="w-64 h-auto mb-6 animate-bounce"
+        />
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+          Bienvenue dans l'univers de Michel-Ange Bukasa
+        </h1>
+        <Button className="text-lg px-6 py-3 mt-4" onClick={() => setAccueil(false)}>
+          Entrer dans la galerie
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white pt-20 px-6">
+      <Navigation />
+
+      <header className="text-center py-10">
+        <h1 className="text-4xl font-bold">L'artiste Michel-Ange Bukasa</h1>
+        <p className="text-gray-600">Artiste peintre congolais & PDG de Mosala Nde Papa</p>
+        <p className="text-lg italic text-blue-700 mt-2">"Vous satisfaire, c'est notre passion — Mosala Nde Papa."</p>
+      </header>
+
+      <section id="galerie" className="py-10">
+        <h2 className="text-2xl font-semibold mb-4">Galerie</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {oeuvres.map((oeuvre, index) => (
+            <Card key={index} className="transform transition duration-300 hover:scale-105">
+              <CardContent className="p-4">
+                <img
+                  src={oeuvre.image}
+                  alt={oeuvre.titre}
+                  className="rounded-xl mb-2 shadow-md"
+                />
+                <h3 className="font-bold text-lg">{oeuvre.titre}</h3>
+                <p className="text-sm text-gray-500">{oeuvre.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section id="apropos" className="py-10">
+        <h2 className="text-2xl font-semibold mb-4">À propos</h2>
+        <p className="text-gray-700 max-w-3xl mx-auto">
+          L'artiste Michel-Ange Bukasa, d'origine congolaise, a terminé ses études à l'Académie des beaux-arts de Kinshasa avec une très grande distinction. Peu après, il s'est lancé dans le marketing pour promouvoir son idée d'entreprise baptisée <strong>Mosala Nde Papa</strong>. Cette entreprise propose plusieurs services : portraits en couleurs ou en noir et blanc, sculpture, et photo shooting pour les amateurs de photo stylée.<br /><br />Ce site est dédié à la promotion de la marque <strong>Mosala Nde Papa</strong> et de son artiste principal, qui en est également le PDG.
+        </p>
+      </section>
+
+      <section id="contact" className="py-10">
+        <h2 className="text-2xl font-semibold mb-4">Contact / Commande</h2>
+        <form className="space-y-4 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
+          <Input type="text" placeholder="Nom" value={nom} onChange={(e) => setNom(e.target.value)} required />
+          <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <Input type="text" placeholder="Message ou type de commande..." value={message} onChange={(e) => setMessage(e.target.value)} required />
+          <Button type="button" onClick={envoyerVersWhatsApp}>Envoyer via WhatsApp</Button>
+          {envoye && <p className="text-green-600 text-sm">Redirection vers WhatsApp en cours...</p>}
+        </form>
+
+        <p className="mt-4 text-sm text-gray-600 text-center">
+          Vous pouvez aussi nous écrire à : <a href="mailto:michelangebukasa268@gmail.com" className="text-blue-600 underline">michelangebukasa268@gmail.com</a>
+        </p>
+        <p className="mt-2 text-sm text-gray-600 text-center">
+          Instagram : <a href="https://www.instagram.com/mosala_nde_papa" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">@mosala_nde_papa</a>
+        </p>
+        <p className="mt-2 text-sm text-gray-600 text-center">
+          Facebook : <a href="https://www.facebook.com/michelange.bukasa" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Michelange Bukasa</a>
+        </p>
+      </section>
+
+      <footer className="text-center py-6 text-sm text-gray-400">
+        © {new Date().getFullYear()} L'artiste Michel-Ange Bukasa. Tous droits réservés.
+      </footer>
+    </div>
+  );
+}
+
